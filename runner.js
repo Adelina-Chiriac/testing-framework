@@ -33,15 +33,15 @@ class Runner {
             console.log(chalk.gray(`---- ${file.shortName}`));
 
             const beforeEaches = [];
-            
+
             global.render = render;
             global.beforeEach = (func) => {
                 beforeEaches.push(func);
             };
-            global.it = (description, func) => {
+            global.it = async (description, func) => {
                 beforeEaches.forEach(fn => fn()); 
                 try {
-                    func();
+                    await func();
                     console.log(chalk.green(`\tOK - ${description}`));
                 }
                 catch(err) {
