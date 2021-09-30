@@ -1,3 +1,4 @@
+const chalk = require("chalk");
 const fs = require("fs");
 const path = require("path");
 
@@ -14,7 +15,7 @@ class Runner {
             const stats = await fs.promises.lstat(filepath);
 
             if (stats.isFile() && file.includes(".test.js")) {
-                this.testFiles.push({ name: filepath });
+                this.testFiles.push({ name: filepath, shortName: file });
             }
             else if (stats.isDirectory()) {
                 const childFiles = await fs.promises.readdir(filepath);
@@ -26,6 +27,7 @@ class Runner {
 
     async runTests() {
         for (let file of this.testFiles) {
+            console.log(chalk.gray(`---- ${file.shortName}`));
 
             const beforeEaches = [];
             global.beforeEach = (func) => {
@@ -35,19 +37,19 @@ class Runner {
                 beforeEaches.forEach(fn => fn()); 
                 try {
                     func();
-                    console.log(`OK - ${description}`);
+                    console.log(chalk.green(`OK - ${description}`));
                 }
                 catch(err) {
-                    console.log(`X - ${description}`);
-                    console.log("\t", err.message);
+                    console.log(chalk.red(`X - ${description}`));
+                    console.log(chalk.red("\t", err.message));
                 }
             };
             try {
                 require(file.name);
             }
             catch(err) {
-                console.log("X - Error Loading File", file.name);
-                console.log(err);
+                console.log(chalk.red("X - Error Loading File", file.name));
+                console.log(chalk.red(err));
             }
         }
     }
