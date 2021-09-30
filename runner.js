@@ -26,6 +26,15 @@ class Runner {
 
     async runTests() {
         for (let file of this.testFiles) {
+
+            const beforeEaches = [];
+            global.beforeEach = (func) => {
+                beforeEaches.push(func);
+            };
+            global.it = (description, func) => {
+                beforeEaches.forEach(fn => fn()); 
+                func();
+            };
             require(file.name);
         }
     }
