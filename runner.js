@@ -37,11 +37,12 @@ class Runner {
                 beforeEaches.forEach(fn => fn()); 
                 try {
                     func();
-                    console.log(chalk.green(`OK - ${description}`));
+                    console.log(chalk.green(`\tOK - ${description}`));
                 }
                 catch(err) {
-                    console.log(chalk.red(`X - ${description}`));
-                    console.log(chalk.red("\t", err.message));
+                    const message = err.message.replace(/\n/g, "\n\t\t");
+                    console.log(chalk.red(`\tX - ${description}`));
+                    console.log(chalk.red("\t", message));
                 }
             };
             try {
