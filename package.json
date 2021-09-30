@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Adelina-Chiriac/testing-framework/issues"
   },
-  "homepage": "https://github.com/Adelina-Chiriac/testing-framework#readme"
+  "homepage": "https://github.com/Adelina-Chiriac/testing-framework#readme",
+  "bin": {
+    "testme": "index.js"
+  }
 }
