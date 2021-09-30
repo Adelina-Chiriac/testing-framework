@@ -33,9 +33,22 @@ class Runner {
             };
             global.it = (description, func) => {
                 beforeEaches.forEach(fn => fn()); 
-                func();
+                try {
+                    func();
+                    console.log(`OK - ${description}`);
+                }
+                catch(err) {
+                    console.log(`X - ${description}`);
+                    console.log("\t", err.message);
+                }
             };
-            require(file.name);
+            try {
+                require(file.name);
+            }
+            catch(err) {
+                console.log("X - Error Loading File", file.name);
+                console.log(err);
+            }
         }
     }
 }
